@@ -30,12 +30,12 @@ class _DisplayPageState extends State<DisplayPage> {
                       itemBuilder: (context,index){
                         return InkWell(
                           onTap: (){
-                            // Navigator.push(context, MaterialPageRoute(builder: (_)=>DisplayPage(dataList[index])));
+
                           },
                           child: Center(
                             child: InkWell(
                               onTap: (){
-                                // Navigator.push(context, MaterialPageRoute(builder: (_)=>SubType(typeName:snapShot.data.documents[index].data["typeName"])));
+
                               },
                               child: Card(
                                 child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
