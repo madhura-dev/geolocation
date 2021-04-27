@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocation/DisplayPage.dart';
 import 'package:geolocator/geolocator.dart';
+
+
 
 
 
@@ -27,23 +30,22 @@ class _HomePageState extends State<HomePage> {
 
     setState(() {
       locationMessage = "Latitude: $lat and Longitude: $long";
+      print(latitude.toString());
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final ref = Firestore.instance.collection("GeoLocator");
-   // TextEditingController DesController = TextEditingController();
-   // TextEditingController ImgController = TextEditingController();
-    Map<String, dynamic> blogToAdd;
+
+    Map<String, dynamic> dataToAdd;
     addData() {
-      blogToAdd = {
+      dataToAdd  = {
         "latitude":latitude,
         "longitude": longitude,
 
       };
-      ref.add(blogToAdd).whenComplete(() {
-        Navigator.pop(context);
+      ref.add(dataToAdd).whenComplete(() {
 
         print("added to the database");
       });
@@ -51,6 +53,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: Colors.blue,
       appBar: AppBar(
+        centerTitle: true,
         title: Text("Firebase Geo locator"),
       ),
       body: SingleChildScrollView(
@@ -98,68 +101,19 @@ class _HomePageState extends State<HomePage> {
                 },
                 child: Text("Get User Location"),
               ),
-              StreamBuilder(
-                  stream: ref.snapshots(),
-                  builder: (context, AsyncSnapshot<QuerySnapshot>snapShot) {
-                    if(snapShot.hasData){
 
-                      return SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            ListView.builder(
-                              physics: NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: snapShot.data.documents.length,
-                              itemBuilder: (context,index){
-                                return InkWell(
-                                  onTap: (){
-                                    // Navigator.push(context, MaterialPageRoute(builder: (_)=>DisplayPage(dataList[index])));
-                                  },
-                                  child: Center(
-                                    child: InkWell(
-                                      onTap: (){
-                                        // Navigator.push(context, MaterialPageRoute(builder: (_)=>SubType(typeName:snapShot.data.documents[index].data["typeName"])));
-                                      },
-                                      child: Card(
-                                        child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Center(child: Text(snapShot.data.documents[index].data["longitude"],style: TextStyle(fontSize: 30),)),
+              MaterialButton(
+                color: Colors.white,
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (_)=>DisplayPage()));
 
 
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
-
-
-                            ),
-
-                          ],
-                        ),
-                      );
-                    }
-                    else{
-                      return CircularProgressIndicator();
-                    }
-
-                    return Column(
-                      children: [
-
-                      ],
-                    );
-                  }
+                },
+                child: Text("Check all Location"),
               ),
 
-              // FlatButton(
-              //   color: Colors.white,
-              //   onPressed: () {
-              //     googleMap();
-              //   },
-              //   child: Text("Open GoogleMap"),
-              // ),
+
+
             ],
           ),
         ),
